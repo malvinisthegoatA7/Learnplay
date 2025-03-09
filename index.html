@@ -1,273 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn & Play</title>
-    <style>
-        body {
-            font-family: 'Comic Sans MS', sans-serif;
-            text-align: center;
-            background-color: #fefefe;
-            background-image: url('https://www.transparenttextures.com/patterns/stardust.png'), linear-gradient(to right, #ffcccb, #ffb6c1, #ffebf0);
-            background-size: cover;
-            color: #333;
-            margin: 0;
-            padding: 0;
+   let currentSubject = "";
+let gameStarted = false;
+
+// Function to load the game for the selected subject
+function loadGame(subject) {
+    currentSubject = subject;
+    document.getElementById("currentSubject").innerText = `Current Subject: ${subject}`;
+    document.getElementById("gameTitle").innerText = `${subject} Game`;
+    document.getElementById("question").innerText = `Click on "Start Game" to begin the ${subject} game.`;
+    gameStarted = false;
+    document.getElementById("startGameButton").style.display = "inline-block"; // Show start button
+    document.getElementById("resetGameButton").style.display = "none"; // Hide reset button
+}
+
+// Function to start the selected game
+function startGame() {
+    if (!gameStarted) {
+        gameStarted = true;
+        document.getElementById("startGameButton").style.display = "none"; // Hide start button
+        document.getElementById("resetGameButton").style.display = "inline-block"; // Show reset button
+
+        // Load the question based on the subject
+        if (currentSubject === "Geography") {
+            loadGeographyGame();
+        } else if (currentSubject === "Math") {
+            loadMathGame();
+        } else if (currentSubject === "Science") {
+            loadScienceGame();
+        } else if (currentSubject === "History") {
+            loadHistoryGame();
         }
+    }
+}
 
-        header {
-            background-color: #f7b1b1;
-            padding: 50px 20px;
-            color: white;
-            font-size: 3rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
+// Function to load Geography game
+function loadGeographyGame() {
+    document.getElementById("question").innerText = "What is the capital of France?";  // Example question for Geography
+    // Additional game logic here (e.g., showing a map, etc.)
+}
 
-        button {
-            margin: 10px;
-            padding: 15px 25px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+// Function to load Math game
+function loadMathGame() {
+    document.getElementById("question").innerText = "What is 5 + 7?";  // Example question for Math
+    // Additional game logic here (e.g., multiple-choice options, etc.)
+}
 
-        button:hover {
-            background-color: #45a049;
-        }
+// Function to load Science game
+function loadScienceGame() {
+    document.getElementById("question").innerText = "What is the chemical symbol for water?";  // Example question for Science
+    // Additional game logic here (e.g., scientific concepts, etc.)
+}
 
-        input {
-            margin: 10px;
-            padding: 10px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 80%;
-        }
+// Function to load History game
+function loadHistoryGame() {
+    document.getElementById("question").innerText = "Who was the first president of the United States?";  // Example question for History
+    // Additional game logic here (e.g., timeline of events, etc.)
+}
 
-        h2 {
-            font-size: 1.5rem;
-            color: #333;
-        }
-
-        #quizSection {
-            background-color: #e0f7fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        #subjectButtons {
-            margin-top: 30px;
-        }
-
-        #gameButtons {
-            margin-top: 30px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .gameButton {
-            padding: 20px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            background-color: #ffcc00;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .gameButton:hover {
-            background-color: #f5b300;
-        }
-
-        #signInForm {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background: url('https://www.transparenttextures.com/patterns/zigzag.png') repeat;
-        }
-
-        #signInForm h2 {
-            font-size: 2.5rem;
-            color: #4CAF50;
-        }
-
-        #signInForm input {
-            width: 300px;
-            margin-bottom: 15px;
-        }
-
-        .banner {
-            display: none;
-            margin-top: 20px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            padding: 10px;
-            color: white;
-            background-color: #f44336;
-            border-radius: 5px;
-        }
-
-        .banner.correct {
-            background-color: #4CAF50;
-        }
-
-        #rainbowText {
-            font-size: 3rem;
-            color: #ff6ec7;
-            background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-
-    </style>
-</head>
-<body>
-
-    <header>
-        <div id="rainbowText">Learn & Play</div>
-    </header>
-
-    <!-- Sign-In Form -->
-    <div id="signInForm">
-        <h2>Sign In</h2>
-        <input type="email" id="email" placeholder="Enter your email" required>
-        <input type="password" id="password" placeholder="Enter your password" required>
-        <button onclick="login()">Sign In</button>
-
-        <div class="banner" id="banner"></div>
-    </div>
-
-    <!-- Subject Buttons after Sign In -->
-    <div id="subjectButtons" style="display: none;">
-        <button onclick="loadQuiz('Math')">Math</button>
-        <button onclick="loadQuiz('Reading')">Reading</button>
-        <button onclick="loadQuiz('Science')">Science</button>
-        <button onclick="loadQuiz('Geography')">Geography</button>
-        <div id="gameButtons">
-            <button class="gameButton" onclick="goToGame('Math')">Math Game</button>
-            <button class="gameButton" onclick="goToGame('Reading')">Reading Game</button>
-            <button class="gameButton" onclick="goToGame('Science')">Science Game</button>
-            <button class="gameButton" onclick="goToGame('Geography')">Geography Game</button>
-        </div>
-    </div>
-
-    <!-- Quiz Section -->
-    <div id="quizSection" style="display: none;">
-        <h2>Quiz Time!</h2>
-        <p id="question">Loading question...</p>
-        <button onclick="checkAnswer(0)" id="answer1"></button>
-        <button onclick="checkAnswer(1)" id="answer2"></button>
-        <button onclick="checkAnswer(2)" id="answer3"></button>
-        <button onclick="checkAnswer(3)" id="answer4"></button>
-    </div>
-
-    <!-- Sound Effects -->
-    <audio id="correctSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
-    <audio id="incorrectSound" src="https://www.soundjay.com/button/beep-08.wav"></audio>
-
-    <script>
-        let currentSubject = '';
-        let currentQuestion = 0;
-        let quizData = {};
-
-        const correctSound = document.getElementById('correctSound');
-        const incorrectSound = document.getElementById('incorrectSound');
-
-        const banner = document.getElementById('banner');
-
-        // Quiz Data (Randomized Questions)
-        const quizzes = {
-            Math: [
-                { question: "What is 2 + 2?", answers: ["4", "5", "6", "3"], correct: 0 },
-                { question: "What is 3 * 3?", answers: ["6", "7", "9", "12"], correct: 2 }
-            ],
-            Reading: [
-                { question: "What is the main idea of the story?", answers: ["Setting", "Plot", "Character", "Theme"], correct: 3 },
-                { question: "What is the tone of the text?", answers: ["Happy", "Sad", "Angry", "Excited"], correct: 0 }
-            ],
-            Science: [
-                { question: "What is the boiling point of water?", answers: ["100°C", "90°C", "110°C", "80°C"], correct: 0 },
-                { question: "Which planet is known as the Red Planet?", answers: ["Mars", "Earth", "Venus", "Jupiter"], correct: 0 }
-            ],
-            Geography: [
-                { question: "What is the capital of France?", answers: ["London", "Paris", "Rome", "Berlin"], correct: 1 },
-                { question: "Which continent is Egypt located in?", answers: ["Africa", "Asia", "Europe", "Australia"], correct: 0 }
-            ],
-        };
-
-        function login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            if (email && password) {
-                document.getElementById('signInForm').style.display = 'none';
-                document.getElementById('subjectButtons').style.display = 'block';
-            } else {
-                banner.textContent = 'Uh-oh! Please enter both email and password.';
-                banner.classList.add('incorrect');
-                banner.style.display = 'block';
-                incorrectSound.play();
-                setTimeout(() => banner.style.display = 'none', 2000);
-            }
-        }
-
-        function loadQuiz(subject) {
-            currentSubject = subject;
-            quizData = quizzes[subject];
-            currentQuestion = 0;
-            document.getElementById('subjectButtons').style.display = 'none';
-            document.getElementById('quizSection').style.display = 'block';
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            const question = quizData[currentQuestion];
-            document.getElementById('question').textContent = question.question;
-            document.getElementById('answer1').textContent = question.answers[0];
-            document.getElementById('answer2').textContent = question.answers[1];
-            document.getElementById('answer3').textContent = question.answers[2];
-            document.getElementById('answer4').textContent = question.answers[3];
-        }
-
-        function checkAnswer(answerIndex) {
-            const correctAnswer = quizData[currentQuestion].correct;
-
-            if (answerIndex === correctAnswer) {
-                correctSound.play();
-                banner.textContent = "Yay! Correct Answer!";
-                banner.classList.add('correct');
-            } else {
-                incorrectSound.play();
-                banner.textContent = "Uh-oh! Wrong Answer.";
-                banner.classList.add('incorrect');
-            }
-            
-            banner.style.display = 'block';
-            setTimeout(() => banner.style.display = 'none', 2000);
-
-            currentQuestion++;
-            if (currentQuestion < quizData.length) {
-                loadQuestion();
-            } else {
-                alert("Congratulations! You've completed the quiz.");
-                document.getElementById('quizSection').style.display = 'none';
-                document.getElementById('subjectButtons').style.display = 'block';
-            }
-        }
-
-        function goToGame(subject) {
-            alert("Starting the " + subject + " Game!");
-            if(subject === "Math") {
-
+// Function to reset the game
+function resetGame() {
+    gameStarted = false;
+    document.getElementById("startGameButton").style.display = "inline-block"; // Show start button
+    document.getElementById("resetGameButton").style.display = "none"; // Hide reset button
+    document.getElementById("question").innerText = "Click on a subject to start playing!";
+    document.getElementById("gameTitle").innerText = "Game Title";
+    document.getElementById("currentSubject").innerText = "Current Subject: None";
+}
