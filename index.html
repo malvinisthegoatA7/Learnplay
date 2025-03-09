@@ -1,172 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Portal</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            text-align: center;
-        }
-
-        h1 {
-            color: #ff6347;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .subjectBtn {
-            margin: 10px;
-            padding: 10px 20px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .subjectBtn:hover {
-            background-color: #45a049;
-        }
-
-        #signInSection,
-        #subjects,
-        #gameArea {
-            display: none;
-        }
-
-        #signInSection {
-            margin-bottom: 30px;
-        }
-
-        input {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
-            width: 80%;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #008cba;
-            color: white;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: #007b8a;
-        }
-
-        #gameArea {
-            margin-top: 30px;
-        }
-
-        #gameTitle {
-            font-size: 24px;
-            color: #ff6347;
-        }
-
-        #question {
-            font-size: 18px;
-            margin-top: 20px;
-        }
-
-        #currentSubject {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kids Learning Platform</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8ff;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .banner {
+      background-color: #ff6347;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-size: 24px;
+    }
+    .sign-in-form {
+      display: flex;
+      justify-content: center;
+      padding: 50px;
+    }
+    .sign-in-box {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .sign-in-box input {
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      width: 100%;
+    }
+    .subjects {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 50px;
+    }
+    .subject {
+      background: linear-gradient(45deg, #ff6347, #ffb6c1, #add8e6);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      color: white;
+      font-size: 22px;
+      width: 200px;
+      cursor: pointer;
+    }
+    .subject:hover {
+      background: linear-gradient(45deg, #add8e6, #ffb6c1, #ff6347);
+    }
+    .games-tab {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .games-content {
+      display: none;
+      text-align: center;
+    }
+    .show-games {
+      background-color: #32cd32;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+      font-size: 18px;
+    }
+    .subject-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      margin-top: 20px;
+    }
+    .sound-button {
+      background-color: #ff6347;
+      padding: 10px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="container">
-        <h1>Welcome to the Learning Portal</h1>
 
-        <!-- Sign-In Section -->
-        <div id="signInSection">
-            <h2>Sign In</h2>
-            <form id="signInForm">
-                <input type="email" id="email" placeholder="Enter your email" required>
-                <input type="password" id="password" placeholder="Enter your password" required>
-                <button type="submit" id="signInButton">Sign In</button>
-            </form>
-        </div>
+  <div class="banner">Welcome to the Kids Learning Platform</div>
 
-        <!-- Subjects Section (hidden by default) -->
-        <div id="subjects">
-            <p id="currentSubject">Current Subject: None</p>
-            <button class="subjectBtn" onclick="loadGame('Geography')">Geography</button>
-            <button class="subjectBtn" onclick="loadGame('Math')">Math</button>
-            <button class="subjectBtn" onclick="loadGame('Science')">Science</button>
-            <button class="subjectBtn" onclick="loadGame('History')">History</button>
-        </div>
-
-        <!-- Game Area (hidden by default) -->
-        <div id="gameArea">
-            <h2 id="gameTitle">Game Title</h2>
-            <p id="question">Click on a subject to start playing!</p>
-            <button id="startGameButton" onclick="startGame()">Start Game</button>
-            <button id="resetGameButton" onclick="resetGame()">Reset Game</button>
-        </div>
+  <div class="sign-in-form">
+    <div class="sign-in-box">
+      <h2>Sign In</h2>
+      <form id="sign-in-form">
+        <input type="email" id="email" placeholder="Email Address" required>
+        <input type="password" id="password" placeholder="Your Password" required>
+        <button type="submit">Sign In</button>
+      </form>
     </div>
+  </div>
 
-    <script>
-        // Sign-in functionality
-        document.getElementById('signInForm').addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevent the default form submission action
+  <div class="subjects" id="subjects">
+    <div class="subject" onclick="selectSubject('Math')">Math</div>
+    <div class="subject" onclick="selectSubject('Geography')">Geography</div>
+    <div class="subject" onclick="selectSubject('Reading')">Reading</div>
+    <div class="subject" onclick="selectSubject('Science')">Science</div>
+    <div class="subject" onclick="selectSubject('Arts')">Arts</div>
+  </div>
 
-            // Get the email and password input values
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+  <div class="games-tab">
+    <button class="show-games" onclick="toggleGames()">Games</button>
+  </div>
 
-            // Basic validation: Ensure email and password are filled out
-            if (email === '' || password === '') {
-                alert('Please fill out both fields.');
-            } else {
-                // Simulate a successful sign-in by showing the subjects section
-                alert('Sign-In Successful!');
+  <div class="games-content" id="games-content">
+    <div class="subject-box" id="subject-box">
+      <h2 id="selected-subject">Choose a subject to start!</h2>
+      <p>Game coming soon!</p>
+    </div>
+  </div>
 
-                // Hide the sign-in section and show the subjects
-                document.getElementById('signInSection').style.display = 'none';
-                document.getElementById('subjects').style.display = 'block';
-            }
-        });
+  <button class="sound-button" onclick="playSound()">Play Sound</button>
 
-        // Function to load the selected game subject
-        function loadGame(subject) {
-            document.getElementById('currentSubject').textContent = `Current Subject: ${subject}`;
+  <script>
+    let loggedIn = false;
 
-            // Show the game area and update the game title
-            document.getElementById('subjects').style.display = 'none';
-            document.getElementById('gameArea').style.display = 'block';
-            document.getElementById('gameTitle').textContent = `${subject} Game`;
+    // Handle Sign In
+    document.getElementById('sign-in-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
 
-            // You can load specific questions or gameplay for each subject here
-            document.getElementById('question').textContent = `Loading ${subject} questions...`;
-        }
+      if (email && password) {
+        loggedIn = true;
+        alert('You are logged in!');
+        document.getElementById('sign-in-form').style.display = 'none';
+        document.getElementById('subjects').style.display = 'flex';
+      } else {
+        alert('Please enter valid email and password.');
+      }
+    });
 
-        // Function to start the game (You can customize this to start the subject's game)
-        function startGame() {
-            alert('Starting the game!');
-        }
+    // Select Subject
+    function selectSubject(subject) {
+      document.getElementById('selected-subject').innerText = `Welcome to ${subject}`;
+      document.getElementById('subject-box').style.display = 'block';
+    }
 
-        // Function to reset the game (You can customize this to reset the game state)
-        function resetGame() {
-            alert('Resetting the game!');
-        }
-    </script>
+    // Toggle Games Tab
+    function toggleGames() {
+      const gamesContent = document.getElementById('games-content');
+      if (gamesContent.style.display === 'none' || gamesContent.style.display === '') {
+        gamesContent.style.display = 'block';
+      } else {
+        gamesContent.style.display = 'none';
+      }
+    }
+
+    // Play Sound
+    function playSound() {
+      const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
+      audio.play();
+    }
+
+    // Add Rainbow Animation to Subjects
+    function animateSubjects() {
+      const subjects = document.querySelectorAll('.subject');
+      subjects.forEach(subject => {
+        subject.style.animation = 'sweep 2s infinite';
+      });
+    }
+
+    animateSubjects();
+  </script>
+
 </body>
-
 </html>
