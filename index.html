@@ -1,67 +1,172 @@
-   let currentSubject = "";
-let gameStarted = false;
+<!DOCTYPE html>
+<html lang="en">
 
-// Function to load the game for the selected subject
-function loadGame(subject) {
-    currentSubject = subject;
-    document.getElementById("currentSubject").innerText = `Current Subject: ${subject}`;
-    document.getElementById("gameTitle").innerText = `${subject} Game`;
-    document.getElementById("question").innerText = `Click on "Start Game" to begin the ${subject} game.`;
-    gameStarted = false;
-    document.getElementById("startGameButton").style.display = "inline-block"; // Show start button
-    document.getElementById("resetGameButton").style.display = "none"; // Hide reset button
-}
-
-// Function to start the selected game
-function startGame() {
-    if (!gameStarted) {
-        gameStarted = true;
-        document.getElementById("startGameButton").style.display = "none"; // Hide start button
-        document.getElementById("resetGameButton").style.display = "inline-block"; // Show reset button
-
-        // Load the question based on the subject
-        if (currentSubject === "Geography") {
-            loadGeographyGame();
-        } else if (currentSubject === "Math") {
-            loadMathGame();
-        } else if (currentSubject === "Science") {
-            loadScienceGame();
-        } else if (currentSubject === "History") {
-            loadHistoryGame();
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
         }
-    }
-}
 
-// Function to load Geography game
-function loadGeographyGame() {
-    document.getElementById("question").innerText = "What is the capital of France?";  // Example question for Geography
-    // Additional game logic here (e.g., showing a map, etc.)
-}
+        h1 {
+            color: #ff6347;
+        }
 
-// Function to load Math game
-function loadMathGame() {
-    document.getElementById("question").innerText = "What is 5 + 7?";  // Example question for Math
-    // Additional game logic here (e.g., multiple-choice options, etc.)
-}
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-// Function to load Science game
-function loadScienceGame() {
-    document.getElementById("question").innerText = "What is the chemical symbol for water?";  // Example question for Science
-    // Additional game logic here (e.g., scientific concepts, etc.)
-}
+        .subjectBtn {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-// Function to load History game
-function loadHistoryGame() {
-    document.getElementById("question").innerText = "Who was the first president of the United States?";  // Example question for History
-    // Additional game logic here (e.g., timeline of events, etc.)
-}
+        .subjectBtn:hover {
+            background-color: #45a049;
+        }
 
-// Function to reset the game
-function resetGame() {
-    gameStarted = false;
-    document.getElementById("startGameButton").style.display = "inline-block"; // Show start button
-    document.getElementById("resetGameButton").style.display = "none"; // Hide reset button
-    document.getElementById("question").innerText = "Click on a subject to start playing!";
-    document.getElementById("gameTitle").innerText = "Game Title";
-    document.getElementById("currentSubject").innerText = "Current Subject: None";
-}
+        #signInSection,
+        #subjects,
+        #gameArea {
+            display: none;
+        }
+
+        #signInSection {
+            margin-bottom: 30px;
+        }
+
+        input {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #008cba;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #007b8a;
+        }
+
+        #gameArea {
+            margin-top: 30px;
+        }
+
+        #gameTitle {
+            font-size: 24px;
+            color: #ff6347;
+        }
+
+        #question {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        #currentSubject {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to the Learning Portal</h1>
+
+        <!-- Sign-In Section -->
+        <div id="signInSection">
+            <h2>Sign In</h2>
+            <form id="signInForm">
+                <input type="email" id="email" placeholder="Enter your email" required>
+                <input type="password" id="password" placeholder="Enter your password" required>
+                <button type="submit" id="signInButton">Sign In</button>
+            </form>
+        </div>
+
+        <!-- Subjects Section (hidden by default) -->
+        <div id="subjects">
+            <p id="currentSubject">Current Subject: None</p>
+            <button class="subjectBtn" onclick="loadGame('Geography')">Geography</button>
+            <button class="subjectBtn" onclick="loadGame('Math')">Math</button>
+            <button class="subjectBtn" onclick="loadGame('Science')">Science</button>
+            <button class="subjectBtn" onclick="loadGame('History')">History</button>
+        </div>
+
+        <!-- Game Area (hidden by default) -->
+        <div id="gameArea">
+            <h2 id="gameTitle">Game Title</h2>
+            <p id="question">Click on a subject to start playing!</p>
+            <button id="startGameButton" onclick="startGame()">Start Game</button>
+            <button id="resetGameButton" onclick="resetGame()">Reset Game</button>
+        </div>
+    </div>
+
+    <script>
+        // Sign-in functionality
+        document.getElementById('signInForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission action
+
+            // Get the email and password input values
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Basic validation: Ensure email and password are filled out
+            if (email === '' || password === '') {
+                alert('Please fill out both fields.');
+            } else {
+                // Simulate a successful sign-in by showing the subjects section
+                alert('Sign-In Successful!');
+
+                // Hide the sign-in section and show the subjects
+                document.getElementById('signInSection').style.display = 'none';
+                document.getElementById('subjects').style.display = 'block';
+            }
+        });
+
+        // Function to load the selected game subject
+        function loadGame(subject) {
+            document.getElementById('currentSubject').textContent = `Current Subject: ${subject}`;
+
+            // Show the game area and update the game title
+            document.getElementById('subjects').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'block';
+            document.getElementById('gameTitle').textContent = `${subject} Game`;
+
+            // You can load specific questions or gameplay for each subject here
+            document.getElementById('question').textContent = `Loading ${subject} questions...`;
+        }
+
+        // Function to start the game (You can customize this to start the subject's game)
+        function startGame() {
+            alert('Starting the game!');
+        }
+
+        // Function to reset the game (You can customize this to reset the game state)
+        function resetGame() {
+            alert('Resetting the game!');
+        }
+    </script>
+</body>
+
+</html>
