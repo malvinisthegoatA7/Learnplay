@@ -1,4 +1,4 @@
-          <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -197,7 +197,14 @@
                 { question: "What is the main idea of the story?", answers: ["Setting", "Plot", "Character", "Theme"], correct: 3 },
                 { question: "What is the tone of the text?", answers: ["Happy", "Sad", "Angry", "Excited"], correct: 0 }
             ],
-            // Add more subjects here...
+            Science: [
+                { question: "What is the boiling point of water?", answers: ["100°C", "90°C", "110°C", "80°C"], correct: 0 },
+                { question: "Which planet is known as the Red Planet?", answers: ["Mars", "Earth", "Venus", "Jupiter"], correct: 0 }
+            ],
+            Geography: [
+                { question: "What is the capital of France?", answers: ["London", "Paris", "Rome", "Berlin"], correct: 1 },
+                { question: "Which continent is Egypt located in?", answers: ["Africa", "Asia", "Europe", "Australia"], correct: 0 }
+            ],
         };
 
         function login() {
@@ -262,9 +269,5 @@
 
         function goToGame(subject) {
             alert("Starting the " + subject + " Game!");
-            // Redirect or load the respective game page here
-        }
-    </script>
+            if(subject === "Math") {
 
-</body>
-</html>
