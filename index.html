@@ -1,181 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kids Learning Platform</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f8ff;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-    .banner {
-      background-color: #ff6347;
-      color: white;
-      padding: 10px;
-      text-align: center;
-      font-size: 24px;
-    }
-    .sign-in-form {
-      display: flex;
-      justify-content: center;
-      padding: 50px;
-    }
-    .sign-in-box {
-      background-color: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .sign-in-box input {
-      padding: 10px;
-      margin: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      width: 100%;
-    }
-    .subjects {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 50px;
-    }
-    .subject {
-      background: linear-gradient(45deg, #ff6347, #ffb6c1, #add8e6);
-      padding: 30px;
-      border-radius: 15px;
-      text-align: center;
-      color: white;
-      font-size: 22px;
-      width: 200px;
-      cursor: pointer;
-    }
-    .subject:hover {
-      background: linear-gradient(45deg, #add8e6, #ffb6c1, #ff6347);
-    }
-    .games-tab {
-      margin-top: 20px;
-      text-align: center;
-    }
-    .games-content {
-      display: none;
-      text-align: center;
-    }
-    .show-games {
-      background-color: #32cd32;
-      padding: 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      color: white;
-      font-size: 18px;
-    }
-    .subject-box {
-      background-color: white;
-      padding: 30px;
-      border-radius: 15px;
-      margin-top: 20px;
-    }
-    .sound-button {
-      background-color: #ff6347;
-      padding: 10px;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 18px;
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
+import React, { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { motion } from 'framer-motion';
 
-  <div class="banner">Welcome to the Kids Learning Platform</div>
+const subjects = [
+  { name: 'Math', questions: ['What is 5 + 3?', 'Solve 12 ÷ 4', 'What is 7 x 6?'] },
+  { name: 'Reading', questions: ['What is the main idea of a story?', 'Identify the noun in: "The cat runs."'] },
+  { name: 'Art', questions: ['What are primary colors?', 'Name a famous painting.'] },
+  { name: 'Science', questions: ['What is H2O?', 'Name a planet in our solar system.'] }
+];
 
-  <div class="sign-in-form">
-    <div class="sign-in-box">
-      <h2>Sign In</h2>
-      <form id="sign-in-form">
-        <input type="email" id="email" placeholder="Email Address" required>
-        <input type="password" id="password" placeholder="Your Password" required>
-        <button type="submit">Sign In</button>
-      </form>
+export default function LearningGame() {
+  const [signedIn, setSignedIn] = useState(false);
+  const [currentSubject, setCurrentSubject] = useState(null);
+  const [questionIndex, setQuestionIndex] = useState(0);
+
+  const handleSignIn = () => setSignedIn(true);
+  const chooseSubject = (subject) => {
+    setCurrentSubject(subject);
+    setQuestionIndex(0);
+  };
+  const nextQuestion = () => setQuestionIndex((prev) => (prev + 1) % currentSubject.questions.length);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-r from-pink-400 to-blue-400 p-4 text-center">
+      {!signedIn ? (
+        <div>
+          <h1 className="text-4xl mb-4 text-white">Welcome to Fun Learning!</h1>
+          <Input placeholder="Email" className="mb-2" />
+          <Input type="password" placeholder="Password" className="mb-4" />
+          <Button onClick={handleSignIn} className="bg-yellow-500">Sign In</Button>
+        </div>
+      ) : currentSubject ? (
+        <Card className="bg-white p-4 max-w-md mx-auto">
+          <CardContent>
+            <h2 className="text-2xl mb-2">{currentSubject.name}</h2>
+            <p className="mb-4">{currentSubject.questions[questionIndex]}</p>
+            <Input placeholder="Your Answer" className="mb-2" />
+            <Button onClick={nextQuestion} className="bg-green-500">Next Question</Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <div>
+          <h2 className="text-3xl text-white mb-4">Choose a Subject</h2>
+          <div className="grid grid-cols-2 gap-4">
+            {subjects.map((subject) => (
+              <Button key={subject.name} onClick={() => chooseSubject(subject)} className="bg-gradient-to-r from-yellow-400 to-red-400">{subject.name}</Button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
-  </div>
-
-  <div class="subjects" id="subjects">
-    <div class="subject" onclick="selectSubject('Math')">Math</div>
-    <div class="subject" onclick="selectSubject('Geography')">Geography</div>
-    <div class="subject" onclick="selectSubject('Reading')">Reading</div>
-    <div class="subject" onclick="selectSubject('Science')">Science</div>
-    <div class="subject" onclick="selectSubject('Arts')">Arts</div>
-  </div>
-
-  <div class="games-tab">
-    <button class="show-games" onclick="toggleGames()">Games</button>
-  </div>
-
-  <div class="games-content" id="games-content">
-    <div class="subject-box" id="subject-box">
-      <h2 id="selected-subject">Choose a subject to start!</h2>
-      <p>Game coming soon!</p>
-    </div>
-  </div>
-
-  <button class="sound-button" onclick="playSound()">Play Sound</button>
-
-  <script>
-    let loggedIn = false;
-
-    // Handle Sign In
-    document.getElementById('sign-in-form').addEventListener('submit', function (event) {
-      event.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      if (email && password) {
-        loggedIn = true;
-        alert('You are logged in!');
-        document.getElementById('sign-in-form').style.display = 'none';
-        document.getElementById('subjects').style.display = 'flex';
-      } else {
-        alert('Please enter valid email and password.');
-      }
-    });
-
-    // Select Subject
-    function selectSubject(subject) {
-      document.getElementById('selected-subject').innerText = `Welcome to ${subject}`;
-      document.getElementById('subject-box').style.display = 'block';
-    }
-
-    // Toggle Games Tab
-    function toggleGames() {
-      const gamesContent = document.getElementById('games-content');
-      if (gamesContent.style.display === 'none' || gamesContent.style.display === '') {
-        gamesContent.style.display = 'block';
-      } else {
-        gamesContent.style.display = 'none';
-      }
-    }
-
-    // Play Sound
-    function playSound() {
-      const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
-      audio.play();
-    }
-
-    // Add Rainbow Animation to Subjects
-    function animateSubjects() {
-      const subjects = document.querySelectorAll('.subject');
-      subjects.forEach(subject => {
-        subject.style.animation = 'sweep 2s infinite';
-      });
-    }
-
-    animateSubjects();
-  </script>
-
-</body>
-</html>
+  );
+}
